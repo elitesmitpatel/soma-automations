@@ -764,7 +764,10 @@
                 </div>
             </div>
             <div class="contact-form reveal">
-                <form id="contactForm" action="https://formspree.io/f/FORM_ID" method="POST" onsubmit="handleSubmit(event)">
+                <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleSubmit(event)">
+                    <input type="hidden" name="access_key" value="a2db3d81-da43-4a02-be9f-5ee6546b3dd7">
+                    <input type="hidden" name="subject" value="New Contact from Soma Automations Website">
+                    <input type="hidden" name="from_name" value="Soma Automations Website">
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" name="name" placeholder="John Doe" required>
