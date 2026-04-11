@@ -764,10 +764,7 @@
                 </div>
             </div>
             <div class="contact-form reveal">
-                <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleSubmit(event)">
-                    <input type="hidden" name="access_key" value="a2db3d81-da43-4a02-be9f-5ee6546b3dd7">
-                    <input type="hidden" name="subject" value="New Contact from Soma Automations Website">
-                    <input type="hidden" name="from_name" value="Soma Automations Website">
+                <form id="contactForm" onsubmit="handleSubmit(event)">
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" name="name" placeholder="John Doe" required>
@@ -977,6 +974,10 @@ function animateParticles() {
 }
 animateParticles();
 
+// Supabase config
+const SUPABASE_URL = 'https://ryoaamutexwdtdpxdlll.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_5l8CexxjoAmy0dslZqyOvw_8BkRdAVZ';
+
 // Form submit
 function handleSubmit(e) {
     e.preventDefault();
@@ -985,14 +986,26 @@ function handleSubmit(e) {
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    const formData = new FormData(form);
+    const formData = {
+        name: form.querySelector('[name="name"]').value,
+        email: form.querySelector('[name="email"]').value,
+        company: form.querySelector('[name="company"]').value,
+        service: form.querySelector('[name="service"]').value,
+        message: form.querySelector('[name="message"]').value,
+        created_at: new Date().toISOString()
+    };
 
-    fetch(form.action, {
+    fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
         method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(formData)
     }).then(response => {
-        if (response.ok) {
+        if (response.ok || response.status === 201) {
             btn.textContent = '✓ Message Sent!';
             btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
             form.reset();
@@ -1000,20 +1013,16 @@ function handleSubmit(e) {
             btn.textContent = 'Error! Try Again';
             btn.style.background = '#EF4444';
         }
-        setTimeout(() => {
-            btn.textContent = 'Send Message';
-            btn.style.background = '';
-            btn.disabled = false;
-        }, 3000);
     }).catch(() => {
         btn.textContent = 'Error! Try Again';
         btn.style.background = '#EF4444';
-        setTimeout(() => {
-            btn.textContent = 'Send Message';
-            btn.style.background = '';
-            btn.disabled = false;
-        }, 3000);
     });
+
+    setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        btn.disabled = false;
+    }, 3000);
 }
 
 // Smooth scroll for anchor links
