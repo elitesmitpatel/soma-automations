@@ -1,22 +1,22 @@
 # Soma Automations
 
-AI-powered automation solutions. **We automate anything.**
+AI-powered automation solutions. **We automate your business.**
 
-🌐 **Live:** https://swikriti-1999.github.io/soma-automations/
+🌐 **Live:** https://elitesmitpatel.github.io/soma-automations/
 
 ## Services
-- AI Workflow Automation
-- AI Chatbots & Assistants
-- Data Pipeline Automation
-- API & System Integration
-- Email & Marketing Automation
-- Document & Invoice Processing
-- RPA (Robotic Process Automation)
-- Custom AI Solutions
-- Monitoring & Alerting
+- Personalized Outreach Agent
+- Sales Automation Agent
+- Personal Assistant Agent
+- AI Concierge
+- Speed to Lead
+- Document Processing
+- Follow-up Nurture Sequences
+- Database Reactivation
+- Internal Reporting & Status Notifications
 
 ## Tech Stack
-OpenAI · n8n · Zapier · Make · Python · Node.js · LangChain · Pinecone · AWS · Google Cloud · Retool · Airtable
+OpenAI · n8n · Zapier · Make · Python · Node.js · LangChain · Pinecone · AWS · Google Cloud · Slack
 
 ---
 © 2026 Soma Automations. All rights reserved.
