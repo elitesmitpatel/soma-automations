@@ -768,7 +768,7 @@
                     <input type="text" name="name" placeholder="Your Name *" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
                     <input type="email" name="email" placeholder="Your Email *" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
                     <input type="text" name="company" placeholder="Company Name" style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
-                    <select name="service" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
+                    <select name="service" required style="width:100%;padding:0.9rem 1.2rem;background:#1A1230;border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
                         <option value="" style="color:#999;">Select a service...</option>
                         <option style="color:#fff;">Personalized Outreach Agent</option>
                         <option style="color:#fff;">Sales Automation Agent</option>
@@ -975,7 +975,10 @@ function handleSubmit(e) {
     const subject = encodeURIComponent(`New Contact: ${name} - ${service}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nService: ${service}\n\nMessage:\n${message}`);
     
-    window.location.href = `mailto:somaautomations@gmail.com?subject=${subject}&body=${body}`;
+    // Use setTimeout to ensure it runs after preventDefault
+    setTimeout(() => {
+        window.location.href = `mailto:somaautomations@gmail.com?subject=${subject}&body=${body}`;
+    }, 10);
     
     btn.textContent = '✓ Opening Email...';
     btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
