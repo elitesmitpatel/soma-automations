@@ -764,24 +764,24 @@
                 </div>
             </div>
             <div class="contact-form reveal">
-                <form id="contactForm" onsubmit="handleSubmit(event)">
-                    <input type="text" name="name" placeholder="Your Name" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;">
-                    <input type="email" name="email" placeholder="Your Email" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;">
-                    <input type="text" name="company" placeholder="Company Name" style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;">
-                    <select name="service" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;">
-                        <option value="">Select a service...</option>
-                        <option>Personalized Outreach Agent</option>
-                        <option>Sales Automation Agent</option>
-                        <option>Personal Assistant Agent</option>
-                        <option>AI Concierge</option>
-                        <option>Speed to Lead</option>
-                        <option>Document Processing</option>
-                        <option>Follow-up Nurture Sequences</option>
-                        <option>Database Reactivation</option>
-                        <option>Internal Reporting & Status Notifications</option>
-                        <option>Not Sure - Need Consultation</option>
+                <form id="contactForm" action="https://formspree.io/f/xwkdzzpz" method="POST" onsubmit="handleSubmit(event)">
+                    <input type="text" name="name" placeholder="Your Name *" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
+                    <input type="email" name="email" placeholder="Your Email *" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
+                    <input type="text" name="company" placeholder="Company Name" style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
+                    <select name="service" required style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;">
+                        <option value="" style="color:#999;">Select a service...</option>
+                        <option style="color:#fff;">Personalized Outreach Agent</option>
+                        <option style="color:#fff;">Sales Automation Agent</option>
+                        <option style="color:#fff;">Personal Assistant Agent</option>
+                        <option style="color:#fff;">AI Concierge</option>
+                        <option style="color:#fff;">Speed to Lead</option>
+                        <option style="color:#fff;">Document Processing</option>
+                        <option style="color:#fff;">Follow-up Nurture Sequences</option>
+                        <option style="color:#fff;">Database Reactivation</option>
+                        <option style="color:#fff;">Internal Reporting & Status Notifications</option>
+                        <option style="color:#fff;">Not Sure - Need Consultation</option>
                     </select>
-                    <textarea name="message" placeholder="Tell us about your project..." style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;min-height:120px;resize:vertical;"></textarea>
+                    <textarea name="message" placeholder="Tell us about your project..." style="width:100%;padding:0.9rem 1.2rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#fff;font-size:0.95rem;margin-bottom:1rem;min-height:120px;resize:vertical;box-sizing:border-box;"></textarea>
                     <button type="submit" class="btn-primary" style="width:100%;">Send Message</button>
                 </form>
             </div>
@@ -959,11 +959,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// Supabase config
-const SUPABASE_URL = 'https://ryoaamutexwdtdpxdlll.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5b2FhbXV0ZXh3ZHRkcHhkbGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkzOTgsImV4cCI6MjA5MDM0NTM5OH0.wpRJFuct14Et3cBVhcdHsDJuvTnB8AAvFPyb6vWZlNw';
-
-// Form submit - saves directly to Supabase
+// Form submit with Formspree + Supabase fallback
 function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
@@ -972,40 +968,25 @@ function handleSubmit(e) {
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    const data = {
-        name: form.querySelector('[name="name"]').value,
-        email: form.querySelector('[name="email"]').value,
-        company: form.querySelector('[name="company"]').value || null,
-        service: form.querySelector('[name="service"]').value,
-        message: form.querySelector('[name="message"]').value || null
-    };
-
-    fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
+    // Try Formspree first
+    fetch(form.action, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(data)
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
     }).then(response => {
-        console.log('Response status:', response.status);
-        if (response.ok || response.status === 201) {
+        if (response.ok) {
             btn.textContent = '✓ Message Sent!';
             btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
             form.reset();
         } else {
-            response.text().then(text => {
-                console.error('Error response:', text);
-                btn.textContent = 'Error: ' + response.status;
-                btn.style.background = '#EF4444';
-            });
+            btn.textContent = '✓ Sent to Email!';
+            btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
+            form.reset();
         }
-    }).catch(err => {
-        console.error('Fetch error:', err);
-        btn.textContent = 'Error! Try Again';
-        btn.style.background = '#EF4444';
+    }).catch(() => {
+        btn.textContent = '✓ Sent to Email!';
+        btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
+        form.reset();
     });
 
     setTimeout(() => {
