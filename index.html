@@ -765,6 +765,9 @@
             </div>
             <div class="contact-form reveal">
                 <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <input type="hidden" name="access_key" value="a2db3d81-da43-4a02-be9f-5ee6546b3dd7">
+                    <input type="hidden" name="subject" value="New Contact from Soma Automations">
+                    <input type="hidden" name="from_name" value="Soma Automations">
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" name="name" placeholder="John Doe" required>
@@ -974,56 +977,36 @@ function animateParticles() {
 }
 animateParticles();
 
-// Supabase config
-const SUPABASE_URL = 'https://ryoaamutexwdtdpxdlll.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_5l8CexxjoAmy0dslZqyOvw_8BkRdAVZ';
-
-// Form submit
+// Form submit (using Formspree)
 function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const btn = form.querySelector('button');
+    const originalText = btn.textContent;
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    const data = {
-        name: form.querySelector('[name="name"]').value,
-        email: form.querySelector('[name="email"]').value,
-        company: form.querySelector('[name="company"]').value || null,
-        service: form.querySelector('[name="service"]').value,
-        message: form.querySelector('[name="message"]').value || null
-    };
+    const formData = new FormData(form);
 
-    fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
+    fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(data)
+        body: formData
     }).then(response => {
-        console.log('Response:', response.status);
         if (response.ok) {
             btn.textContent = '✓ Message Sent!';
             btn.style.background = 'linear-gradient(135deg, #06D6A0, #059669)';
             form.reset();
         } else {
-            response.text().then(text => {
-                console.error('Error:', text);
-                btn.textContent = 'Error! Try Again';
-                btn.style.background = '#EF4444';
-            });
+            btn.textContent = 'Error! Try Again';
+            btn.style.background = '#EF4444';
         }
-    }).catch(err => {
-        console.error('Catch:', err);
+    }).catch(() => {
         btn.textContent = 'Error! Try Again';
         btn.style.background = '#EF4444';
     });
 
     setTimeout(() => {
-        btn.textContent = 'Send Message';
+        btn.textContent = originalText;
         btn.style.background = '';
         btn.disabled = false;
     }, 4000);
